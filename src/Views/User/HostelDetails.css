@@ -1,0 +1,347 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Body styles */
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Hostel Details Container */
+.hostel-details-container-include1 {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Back Button */
+.back-btn-include1 {
+    margin-bottom: 20px;
+    background-color: #007bff;
+    border: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+.back-btn-include1:hover {
+    background-color: #0056b3;
+}
+
+/* Hostel Details Card */
+.hostel-details-card-include1 {
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 20px;
+}
+
+.hostel-details-img-include1 {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.hostel-title-include1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Loading Container */
+.loading-container-include1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 1.5rem;
+}
+
+/* Food Listing */
+.food-listing-title-include1 {
+    margin-top: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #555;
+}
+
+.food-listing-col-include1 {
+    margin-bottom: 15px;
+}
+
+.food-card-include1 {
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    background: white;
+}
+
+.food-item-include1 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Modal Styles */
+.hostel-details-modal .modal-dialog {
+    max-width: 800px;
+}
+
+.hostel-details-modal .modal-content {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-image-wrapper {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.modal-hostel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+}
+
+.image-overlay h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.image-overlay p {
+    margin: 5px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-content-wrapper {
+    padding: 20px;
+}
+
+.modal-quick-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.quick-info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.info-icon {
+    font-size: 24px;
+    color: #007bff;
+}
+
+.quick-info-item h6 {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.quick-info-item p {
+    margin: 5px 0 0;
+    font-weight: 500;
+    color: #333;
+}
+
+.modal-section {
+    margin-bottom: 30px;
+}
+
+.modal-section h5 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.room-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.room-card-header {
+    padding: 15px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.room-card-header h6 {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.availability {
+    font-size: 14px;
+    color: #28a745;
+}
+
+.room-card-body {
+    padding: 15px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.room-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.food-schedule-carousel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.schedule-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.day-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.meal-times {
+    padding: 15px;
+}
+
+.meal {
+    margin-bottom: 15px;
+}
+
+.meal h6 {
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.meal p {
+    margin: 0;
+    color: #333;
+}
+
+.location-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.address {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.landmarks {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.landmarks h6 {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.book-now-btn {
+    padding: 10px 30px;
+    font-weight: 600;
+    border-radius: 25px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-quick-info {
+        grid-template-columns: 1fr;
+    }
+
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .food-schedule-carousel {
+        grid-template-columns: 1fr;
+    }
+}

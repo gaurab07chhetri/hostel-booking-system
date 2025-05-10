@@ -1,0 +1,323 @@
+:root {
+    --primary-color: #262628;
+    --secondary-color: #262628;
+    --accent-color: #4caf50;
+    --error-color: #f44336;
+    --background-light: #f8f9fa;
+    --text-dark: #2d3436;
+    --sidebar-width: 280px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hostel-owner-dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--background-light);
+  }
+  
+  /* Enhanced Sidebar */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: linear-gradient(195deg, #262628, var(--primary-color));
+    color: white;
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 0 4px 20px #262628;
+    transition: var(--transition);
+    background-color: #262628;
+}
+  
+  .sidebar.closed {
+    width: 80px;
+  }
+  
+  .sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid hsl(0, 0%, 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    transition: opacity 0.3s ease;
+    color: #ffffff;
+  }
+  
+  .sidebar.closed .sidebar-header h2 {
+    opacity: 0;
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    padding-left: 2rem;
+  }
+  
+  .menu-item.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-left: 4px solid var(--accent-color);
+  }
+  
+  .menu-item svg {
+    min-width: 24px;
+    font-size: 1.25rem;
+  }
+  
+  .logout-btn {
+    color: #ff6b6b;
+    margin-top: auto;
+  }
+  
+  .logout-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+  }
+  
+  /* Main Content Area */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+    transition: var(--transition);
+    background-color: var(--background-light);
+  }
+  
+  .main-content.sidebar-closed {
+    margin-left: 80px;
+  }
+  
+  /* Dashboard Stats */
+  .dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .stat-card h3 {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-card p {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+  }
+  
+  /* Hostel Card */
+  /* Hostel Card Styles */
+.hostel-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.hostel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hostel-card-header {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.hostel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-out;
+}
+
+.hostel-card:hover .hostel-image {
+    transform: scale(1.03);
+}
+
+.hostel-status {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
+.status-badge {
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hostel-card-body {
+    padding: 2rem;
+}
+
+.hostel-card-body h2 {
+    margin: 0 0 1.5rem;
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.hostel-info-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin-bottom: 2rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.info-item svg {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.hostel-features {
+    margin: 2rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.hostel-features h3 {
+    color: #2d3436;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.hostel-features p {
+    color: #636e72;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.room-types h3 {
+    color: #2d3436;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.room-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.room-type-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.room-type-card:hover {
+    transform: translateY(-3px);
+}
+
+.room-type-card h4 {
+    color: #2d3436;
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.room-type-card p {
+    color: #636e72;
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+}
+
+.view-details-btn {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.view-details-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hostel-card-header {
+        height: 220px;
+    }
+    
+    .hostel-card-body {
+        padding: 1.5rem;
+    }
+    
+    .hostel-card-body h2 {
+        font-size: 1.5rem;
+    }
+    
+    .info-item {
+        padding: 0.75rem;
+    }
+    
+    .room-grid {
+        grid-template-columns: 1fr;
+    }
+}

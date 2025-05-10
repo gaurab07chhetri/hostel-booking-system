@@ -1,0 +1,125 @@
+/* UserDetailsForm.css */
+.user-details-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .user-details-form h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .user-details-form h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    margin: 1.5rem 0 1rem;
+  }
+  
+  .user-details-form label {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+  }
+  
+  .user-details-form label svg {
+    margin-right: 0.5rem;
+    color: #6b7280;
+  }
+  
+  .user-details-form input,
+  .user-details-form select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 0.25rem;
+  }
+  
+  .user-details-form input:focus,
+  .user-details-form select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .user-details-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a4a4a' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.2rem;
+  }
+  
+  .user-details-form .error {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  
+  .user-details-form button {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 1rem;
+  }
+  
+  .user-details-form button:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+  }
+  
+  .user-details-form button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .user-details-form button:active {
+    transform: translateY(0);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .user-details-form {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+  
+    .user-details-form h2 {
+      font-size: 1.5rem;
+    }
+  
+    .user-details-form input,
+    .user-details-form select {
+      font-size: 0.95rem;
+      padding: 0.65rem 0.85rem;
+    }
+  
+    .user-details-form button {
+      padding: 0.75rem;
+      font-size: 0.95rem;
+    }
+  }

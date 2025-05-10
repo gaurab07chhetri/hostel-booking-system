@@ -1,0 +1,27 @@
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
+const PrivateRoute = ({ children, role }) => {
+    const { isAuthenticated, user } = useAuth();
+
+    if (!isAuthenticated) {
+        return <Navigate to="/" />;
+    }
+
+    if (role && user?.role?.toLowerCase() !== role.toLowerCase()) {
+        // Redirect to appropriate dashboard based on role
+        switch (user?.role?.toLowerCase()) {
+            case 'admin':
+                return <Navigate to="/admin/dashboard" />;
+            case 'owner':
+                return <Navigate to="/owner/dashboard" />;
+            default:
+                return <Navigate to="/dashboard" />;
+        }
+    }
+
+    return children;
+};
+
+export default PrivateRoute;

@@ -1,0 +1,265 @@
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.admin-modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.admin-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+  z-index: 1;
+}
+
+.admin-close-button:hover {
+  color: #333;
+}
+
+.admin-modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 12px 12px 0 0;
+}
+
+.admin-modal-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.8rem;
+}
+
+.admin-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.admin-status-badge.active {
+  background-color: #e3fcef;
+  color: #00a854;
+}
+
+.admin-status-badge.inactive {
+  background-color: #fff1f0;
+  color: #f5222d;
+}
+
+.admin-modal-body {
+  padding: 30px;
+}
+
+.admin-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.admin-left-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-main-image-container {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-main-hostel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-contact-info,
+.admin-hostel-details {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-contact-info h3,
+.admin-hostel-details h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-contact-info p,
+.admin-hostel-details p {
+  margin: 8px 0;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-right-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.admin-rooms-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-rooms-section h3 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.admin-room-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.admin-room-card:hover {
+  transform: translateY(-2px);
+}
+
+.admin-room-image-container {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.admin-room-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-room-details {
+  padding: 15px;
+}
+
+.admin-room-details h4 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+}
+
+.admin-room-details p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.admin-food-schedule {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-food-schedule h3 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-food-table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-food-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.admin-food-table th,
+.admin-food-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-food-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.admin-day-column {
+  font-weight: 500;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .admin-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-modal-content {
+    width: 95%;
+    margin: 10px;
+  }
+
+  .admin-main-image-container {
+    height: 200px;
+  }
+
+  .admin-rooms-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,300 @@
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --accent-color: #10b981;
+    --error-color: #ef4444;
+    --background-light: #f8fafc;
+    --text-dark: #1e293b;
+    --text-light: #ffffff;
+    --sidebar-width: 280px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Modal Overlay */
+  .owner-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .owner-modal-content {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-md);
+    max-width: 90vw;
+    width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalEnter 0.3s ease-out;
+  }
+  
+  @keyframes modalEnter {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .owner-close-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .owner-close-button:hover {
+    color: var(--primary-color);
+    transform: rotate(90deg);
+  }
+  
+  /* Modal Header */
+  .owner-modal-header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .owner-modal-header h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    color: var(--text-dark);
+  }
+  
+  .owner-status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  
+  .owner-status-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .owner-status-badge.approved {
+    background: #dcfce7;
+    color: #166534;
+  }
+  
+  /* Modal Body */
+  .owner-modal-body {
+    padding: 2rem;
+  }
+  
+  .owner-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .owner-modal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Left Section */
+  .owner-main-image-container {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .owner-main-hostel-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+  
+  .owner-main-hostel-image:hover {
+    transform: scale(1.02);
+  }
+  
+  .owner-info-section {
+    margin-top: 1.5rem;
+  }
+  
+  .owner-contact-info {
+    background: var(--background-light);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .owner-contact-info h3 {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+  }
+  
+  .owner-precise-details {
+    background: var(--background-light);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .owner-precise-details h4 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+  }
+  
+  /* Right Section */
+  .owner-rooms-section {
+    background: var(--background-light);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .owner-rooms-section h3 {
+    margin: 0 0 1.5rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+  }
+  
+  .owner-rooms-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  .owner-room-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  
+  .owner-room-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .owner-room-image-container {
+    height: 150px;
+    overflow: hidden;
+  }
+  
+  .owner-room-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+  
+  .owner-room-card:hover img {
+    transform: scale(1.05);
+  }
+  
+  .owner-room-details {
+    padding: 1rem;
+  }
+  
+  .owner-room-details h4 {
+    margin: 0 0 0.5rem;
+    color: var(--text-dark);
+  }
+  
+  /* Food Schedule */
+  .owner-food-schedule {
+    background: var(--background-light);
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+  
+  .owner-food-schedule h3 {
+    margin: 0 0 1.5rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+  }
+  
+  .owner-food-table-container {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .owner-food-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+  }
+  
+  .owner-food-table th,
+  .owner-food-table td {
+    padding: 1rem;
+    text-align: left;
+  }
+  
+  .owner-food-table thead {
+    background: var(--primary-color);
+    color: white;
+  }
+  
+  .owner-food-table th {
+    font-weight: 600;
+    padding: 1.25rem 1rem;
+  }
+  
+  .owner-food-table tbody tr:nth-child(even) {
+    background: var(--background-light);
+  }
+  
+  .owner-day-column {
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .owner-modal-content {
+      width: 95%;
+    }
+  
+    .owner-modal-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .owner-room-details {
+      padding: 0.75rem;
+    }
+  
+    .owner-food-table th,
+    .owner-food-table td {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+    }
+  }

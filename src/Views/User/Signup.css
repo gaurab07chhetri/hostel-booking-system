@@ -1,0 +1,160 @@
+/* Signup.css */
+.signup-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #1a365d, #2a5298, #3a7bd5, #00d2ff);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  overflow: hidden;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hostel-animation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hostel-icon {
+  position: absolute;
+  opacity: 0.1;
+  animation: float 20s infinite linear;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); }
+  100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+.signup-card {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px;
+  z-index: 1;
+  position: relative;
+}
+
+.form-control {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+}
+
+.form-control:focus {
+  border-color: #3a7bd5;
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.2);
+  outline: none;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #3a7bd5;
+  transition: transform 0.2s ease;
+}
+
+.password-toggle-icon:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.signup-button {
+  background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.signup-button:hover {
+  transform: translateY(-2px);
+}
+
+.role-selector {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 1rem;
+}
+
+.role-option {
+  padding: 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-option.active {
+  border-color: #3a7bd5;
+  background: rgba(58, 123, 213, 0.1);
+}
+
+.role-option svg {
+  display: block;
+  margin: 0 auto 0.5rem;
+  font-size: 24px;
+  color: #3a7bd5;
+}
+
+/* New Login Link Styles */
+.login-link {
+  background: none;
+  border: none;
+  color: #4a5568;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.login-link span {
+  color: #3a7bd5;
+  font-weight: 600;
+  margin-left: 0.25rem;
+  text-decoration: underline;
+}
+
+.login-link:hover span {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .signup-card {
+      padding: 1.5rem;
+      margin: 1rem;
+  }
+  
+  .role-selector {
+      grid-template-columns: 1fr;
+  }
+  
+  .login-link {
+      font-size: 0.875rem;
+  }
+}
