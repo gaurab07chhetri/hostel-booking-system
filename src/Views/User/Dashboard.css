@@ -15,7 +15,7 @@
 
 /* Sidebar styles */
 .sidebar {
-    width: 250px;
+    width: 280px;
     background-color: #262628;
     color: white;
     padding: 20px;
@@ -264,13 +264,11 @@ body {
     border: none;
     border-radius: 12px;
     overflow: hidden;
-    
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hostel-card:hover {
     transform: translateY(-5px);
-    
 }
 
 .card-image-container {
@@ -302,7 +300,6 @@ body {
     gap: 6px;
     font-weight: 500;
     font-size: 14px;
-    /* color: #2d3436; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -882,4 +879,29 @@ body {
     color: #43a047;
     font-size: 20px;
     min-width: 20px;
+}
+
+.rating-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.rating-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.rating-stars .star {
+    color: #ffc107;
+    font-size: 1rem;
+}
+
+.rating-count {
+    color: #6c757d;
+    font-size: 0.9rem;
 }

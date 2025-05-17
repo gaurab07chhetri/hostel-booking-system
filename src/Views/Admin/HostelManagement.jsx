@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { FaSearch, FaTrash, FaMapMarkerAlt, FaPhone, FaEnvelope, FaBed, FaMale, FaFemale, FaUsers, FaHotel, FaUserCog, FaTachometerAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSearch, FaTrash, FaMapMarkerAlt, FaPhone, FaEnvelope, FaBed, FaMale, FaFemale, FaUsers, FaHotel, FaUserCog, FaTachometerAlt, FaSignOutAlt, FaStar } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 import HostelDetailsModal from './HostelDetailsModal';
 import './HostelManagement.css';
@@ -172,10 +172,10 @@ const HostelManagement = () => {
                         <FaHotel />
                         <span>Hostel Management</span>
                     </Link>
-                    {/* <Link to="/admin/bookings" className="nav-item">
-                        <FaUsers />
-                        <span>Bookings</span>
-                    </Link> */}
+                    <Link to="/admin/ratings" className="nav-item">
+                        <FaStar />
+                        <span>Reviews & Ratings</span>
+                    </Link>
                     <button onClick={handleLogout} className="nav-item logout-btn">
                         <FaSignOutAlt />
                         <span>Logout</span>

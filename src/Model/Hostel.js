@@ -127,7 +127,13 @@ const HostelSchema = new mongoose.Schema({
         type: String,
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending'
-    }
+    },
+    ratings: [{
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        rating: { type: Number, required: true, min: 1, max: 5 },
+        review: { type: String, maxlength: 500 },
+        createdAt: { type: Date, default: Date.now }
+    }]
 }, {
     timestamps: true // Adds createdAt and updatedAt fields
 });

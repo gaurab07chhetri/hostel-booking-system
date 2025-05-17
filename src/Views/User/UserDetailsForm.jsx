@@ -21,10 +21,13 @@ const UserDetailsForm = () => {
     stayDuration: '',
     educationalQualification: '',
     institutionName: '',
+    preferredRoommate: '',
+    roommate: '',
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedRoommate, setSelectedRoommate] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -72,7 +75,9 @@ const UserDetailsForm = () => {
           address: `${formData.streetAddress}, ${formData.municipality}, ${formData.district}`,
           userId: user._id,
           ...(formData.educationalQualification && { educationalQualification: formData.educationalQualification }),
-          ...(formData.institutionName && { institutionName: formData.institutionName })
+          ...(formData.institutionName && { institutionName: formData.institutionName }),
+          ...(formData.preferredRoommate && { preferredRoommate: formData.preferredRoommate }),
+          ...(formData.roommate && { roommate: formData.roommate })
         })
       });
 
@@ -101,6 +106,15 @@ const UserDetailsForm = () => {
       toast.error(error.message || 'Failed to process booking');
       setIsSubmitting(false);
     }
+  };
+
+  const handleRoommateSelect = (roommate) => {
+    setSelectedRoommate(roommate);
+    setFormData(prev => ({
+        ...prev,
+        preferredRoommate: roommate._id,
+        roommate: roommate.name
+    }));
   };
 
   return (
@@ -173,6 +187,12 @@ const UserDetailsForm = () => {
           placeholder="e.g., TU Institute of Engineering"
         />
       </div>
+
+      {selectedRoommate && (
+        <div className="selected-roommate-info">
+            <strong>Selected Roommate:</strong> {selectedRoommate.name}
+        </div>
+      )}
 
       <button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Processing..." : "Book Now"}

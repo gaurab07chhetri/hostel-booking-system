@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { FaHome, FaUser, FaHeart, FaBook, FaSignOutAlt, FaBars, FaTimes, FaStar, FaRegStar } from 'react-icons/fa';
+import { FaHome, FaUser, FaHeart, FaBook, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 import './MyBookings.css';
 
@@ -18,11 +18,6 @@ const MyBookings = () => {
         phone: localStorage.getItem('userPhone') || ''
     });
     const [favoriteHostels, setFavoriteHostels] = useState([]);
-    const [showRatingModal, setShowRatingModal] = useState(false);
-    const [selectedBooking, setSelectedBooking] = useState(null);
-    const [rating, setRating] = useState(0);
-    const [feedback, setFeedback] = useState('');
-    const [hoverRating, setHoverRating] = useState(0);
 
     useEffect(() => {
         fetchBookings();
@@ -213,48 +208,6 @@ const MyBookings = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const handleRatingSubmit = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/ratings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    bookingId: selectedBooking._id,
-                    hostelId: selectedBooking.hostelId._id,
-                    rating: rating,
-                    feedback: feedback
-                })
-            });
-
-            const data = await response.json();
-            
-            if (response.ok) {
-                toast.success('Rating submitted successfully!');
-                setShowRatingModal(false);
-                setRating(0);
-                setFeedback('');
-                fetchBookings(); // Refresh bookings to show the rating
-            } else {
-                throw new Error(data.message || 'Failed to submit rating');
-            }
-        } catch (err) {
-            console.error('Rating error:', err);
-            toast.error('Error submitting rating: ' + err.message);
-        }
-    };
-
-    const renderRatingStars = (rating) => {
-        return [...Array(5)].map((_, index) => (
-            <span key={index} className="star">
-                {index < rating ? <FaStar /> : <FaRegStar />}
-            </span>
-        ));
-    };
-
     const renderBookingCard = (booking) => (
         <div key={booking._id} className="booking-card">
             <div className="booking-header">
@@ -298,18 +251,7 @@ const MyBookings = () => {
                         Room assignment pending
                     </p>
                 )} */}
-                {booking.status === 'approved' && !booking.rating && (
-                    <button 
-                        className="rate-us-btn"
-                        onClick={() => {
-                            setSelectedBooking(booking);
-                            setShowRatingModal(true);
-                        }}
-                    >
-                        Rate Us
-                    </button>
-                )}
-                {booking.status === 'approved' && booking.roomNumber && !booking.paymentStatus === 'completed' && (
+                {booking.status === 'approved' && !booking.roomNumber && (
                     <button 
                         className="pay-now-btn"
                         onClick={() => handlePayment(booking)}
@@ -321,27 +263,6 @@ const MyBookings = () => {
                     <p className="pending-message">
                         Awaiting approval
                     </p>
-                )}
-                {booking.paymentStatus === 'completed' && !booking.rating && (
-                    <button 
-                        className="rate-btn"
-                        onClick={() => {
-                            setSelectedBooking(booking);
-                            setShowRatingModal(true);
-                        }}
-                    >
-                        Rate Hostel
-                    </button>
-                )}
-                {booking.rating && (
-                    <div className="rating-display">
-                        <div className="stars">
-                            {renderRatingStars(booking.rating)}
-                        </div>
-                        {booking.feedback && (
-                            <p className="feedback">{booking.feedback}</p>
-                        )}
-                    </div>
                 )}
             </div>
         </div>
@@ -416,53 +337,6 @@ const MyBookings = () => {
                     )}
                 </div>
             </main>
-            
-            {showRatingModal && (
-                <div className="rating-modal">
-                    <div className="rating-modal-content">
-                        <h3>Rate Your Experience</h3>
-                        <div className="rating-stars">
-                            {[...Array(5)].map((_, index) => (
-                                <span 
-                                    key={index}
-                                    className="star"
-                                    onMouseEnter={() => setHoverRating(index + 1)}
-                                    onMouseLeave={() => setHoverRating(0)}
-                                    onClick={() => setRating(index + 1)}
-                                >
-                                    {index < (hoverRating || rating) ? <FaStar /> : <FaRegStar />}
-                                </span>
-                            ))}
-                        </div>
-                        <textarea
-                            className="feedback-input"
-                            placeholder="Share your experience (optional)"
-                            value={feedback}
-                            onChange={(e) => setFeedback(e.target.value)}
-                            maxLength={500}
-                        />
-                        <div className="rating-actions">
-                            <button 
-                                className="cancel-btn"
-                                onClick={() => {
-                                    setShowRatingModal(false);
-                                    setRating(0);
-                                    setFeedback('');
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button 
-                                className="submit-btn"
-                                onClick={handleRatingSubmit}
-                                disabled={rating === 0}
-                            >
-                                Submit Rating
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

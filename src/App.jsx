@@ -27,6 +27,8 @@ import OwnerDashboard from './Views/Owner/OwnerDashboard';
 import MyHostel from './Views/User/MyHostel';
 import EditHostelDetails from './Views/Owner/EditHostelDetails';
 import BookingsA from "./Views/Admin/BookingsA";
+import Ratings from './Views/User/Ratings';
+import RatingsA from './Views/Admin/RatingsA';
 
 const App = () => {
     return (
@@ -197,6 +199,24 @@ const App = () => {
                         element={
                             <PrivateRoute adminOnly={true}>
                                 <BookingsA />
+                            </PrivateRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/admin/ratings"
+                        element={
+                            <PrivateRoute adminOnly={true}>
+                                <RatingsA />
+                            </PrivateRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/ratings"
+                        element={
+                            <PrivateRoute>
+                                <Ratings />
                             </PrivateRoute>
                         }
                     />

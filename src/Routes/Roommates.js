@@ -26,19 +26,22 @@ router.post('/match', auth, async (req, res) => {
             });
         }
 
-        // Find users with matching hobbies in the same hostel
-        const potentialRoommates = await User.find({
-            _id: { $ne: req.user.id }, // Exclude current user
-            hobbies: { $in: hobbies }, // Match any of the hobbies
-            role: 'User' // Only match with regular users
-        }).select('name hobbies');
+        // Find users with matching hobbies in the same hostel (must have a booking for this hostel)
+        const usersWithBookingInHostel = await User.find({
+            _id: { $ne: req.user.id },
+            hobbies: { $in: hobbies },
+            role: 'User',
+            'bookings.hostelId': hostelId // Only users who have a booking for this hostel
+        }).select('name hobbies bookings');
 
-        // Calculate matching hobbies for each potential roommate
-        const matches = potentialRoommates.map(roommate => {
-            const matchingHobbies = roommate.hobbies.filter(hobby => 
-                hobbies.includes(hobby)
-            );
-            
+        // Filter to ensure at least one booking object has hostelId == hostelId
+        const filteredUsers = usersWithBookingInHostel.filter(user =>
+            Array.isArray(user.bookings) &&
+            user.bookings.some(booking => booking.hostelId && booking.hostelId.toString() === hostelId)
+        );
+
+        const matches = filteredUsers.map(roommate => {
+            const matchingHobbies = roommate.hobbies.filter(hobby => hobbies.includes(hobby));
             return {
                 _id: roommate._id,
                 name: roommate.name,
@@ -53,8 +56,8 @@ router.post('/match', auth, async (req, res) => {
         res.json({
             success: true,
             matches,
-            message: matches.length > 0 ? 
-                'Found potential roommates' : 
+            message: matches.length > 0 ?
+                'Found potential roommates' :
                 'No matching roommates found. You can proceed with room selection.'
         });
     } catch (error) {

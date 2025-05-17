@@ -16,11 +16,15 @@ import {
   FaMapMarkerAlt,
   FaBed,
   FaPhone,
-  FaEnvelope
+  FaEnvelope,
+  FaHome,
+  FaBuilding,
+  FaStar
 } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 import './AdminDashboard.css';
 import HostelDetailsModal from './HostelDetailsModal';
+import RatingsA from './RatingsA';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -37,6 +41,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
   const [selectedHostel, setSelectedHostel] = useState(null);
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const fetchHostels = async () => {
     try {
@@ -174,6 +179,139 @@ const AdminDashboard = () => {
     navigate('/');
   };
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'ratings':
+        return <RatingsA />;
+      default:
+        return (
+          <div className="admin-dashboard">
+            <div className="admin-sidebar">
+              <div className="sidebar-header">
+                <h2>Admin Panel</h2>
+              </div>
+              <nav className="sidebar-nav">
+                <Link to="/admin/dashboard" className="nav-item active">
+                  <FaTachometerAlt />
+                  Dashboard
+                </Link>
+                <Link to="/admin/users" className="nav-item">
+                  <FaUserCog />
+                  User Management
+                </Link>
+                <Link to="/admin/hostels" className="nav-item">
+                  <FaHotel />
+                  Hostel Management
+                </Link>
+                <Link to="/admin/ratings" className="nav-item">
+                  <FaStar />
+                  Reviews & Ratings
+                </Link>
+                <button onClick={handleLogout} className="nav-item logout-btn">
+                  <FaSignOutAlt />
+                  Logout
+                </button>
+              </nav>
+            </div>
+
+            <div className="main-content00">
+              <div className="dashboard-header">
+                <h1>Admin Dashboard</h1>
+              </div>
+
+              
+              <div className="stats-grid">
+                <div className="stat-card">
+                  <div className="stat-icon blue">
+                    <FaHotel />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Total Hostels</h3>
+                    <p>{stats.totalHostels}</p>
+                  </div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-icon yellow">
+                    <FaClipboardList />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Pending Requests</h3>
+                    <p>{stats.pendingRequests}</p>
+                  </div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-icon green">
+                    <FaCheck />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Approved</h3>
+                    <p>{stats.approved}</p>
+                  </div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-icon red">
+                    <FaTimes />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Declined</h3>
+                    <p>{stats.declined}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="filters-section">
+                <div className="search-bar">
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search hostels..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="status-filter"
+                >
+                  <option value="all">All Hostels</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Declined</option>
+                </select>
+              </div>
+
+              <div className="hostels-container">
+                {loading ? (
+                  <div className="loading">Loading hostels...</div>
+                ) : error ? (
+                  <div className="error">{error}</div>
+                ) : filteredHostels.length === 0 ? (
+                  <div className="no-results">No hostels found</div>
+                ) : (
+                  <>
+                    {renderHostelSection(groupedHostels.pending, 'pending')}
+                    {renderHostelSection(groupedHostels.approved, 'approved')}
+                    {renderHostelSection(groupedHostels.rejected, 'rejected')}
+                  </>
+                )}
+              </div>
+
+              {selectedHostel && (
+                <HostelDetailsModal
+                  hostel={selectedHostel}
+                  onClose={() => setSelectedHostel(null)}
+                />
+              )}
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="admin-dashboard">
       <div className="admin-sidebar">
@@ -192,6 +330,10 @@ const AdminDashboard = () => {
           <Link to="/admin/hostels" className="nav-item">
             <FaHotel />
             Hostel Management
+          </Link>
+          <Link to="/admin/ratings" className="nav-item">
+            <FaStar />
+            Reviews & Ratings
           </Link>
           <button onClick={handleLogout} className="nav-item logout-btn">
             <FaSignOutAlt />

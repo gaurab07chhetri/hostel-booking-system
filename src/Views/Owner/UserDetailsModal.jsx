@@ -1,7 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserDetailsModal.css';
 
 const UserDetailsModal = ({ booking, onClose }) => {
+    const [roommateName, setRoommateName] = useState('');
+    const [roommateLoading, setRoommateLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchRoommateName = async () => {
+            if (booking && booking.roommate) {
+                setRoommateName(booking.roommate);
+                return;
+            }
+            if (booking && booking.preferredRoommate && typeof booking.preferredRoommate === 'string') {
+                setRoommateLoading(true);
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`http://localhost:5000/api/users/${booking.preferredRoommate}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        setRoommateName(data.name || data.nameEnglish || data.user?.name || data.user?.nameEnglish || 'N/A');
+                    } else {
+                        setRoommateName('N/A');
+                    }
+                } catch (error) {
+                    setRoommateName('N/A');
+                } finally {
+                    setRoommateLoading(false);
+                }
+            } else {
+                setRoommateName('N/A');
+            }
+        };
+        fetchRoommateName();
+    }, [booking]);
+
     if (!booking) return null;
 
     return (
@@ -88,11 +124,15 @@ const UserDetailsModal = ({ booking, onClose }) => {
                             </div>
                             <div className="info-item">
                                 <label>Stay Duration:</label>
-                                <span>{booking.stayDuration || 'N/A'}</span>
+                                <span>{(booking.stayDuration && booking.stayDuration.toString().trim() !== '') ? booking.stayDuration : 'N/A'}</span>
                             </div>
                             <div className="info-item">
                                 <label>Booking Date:</label>
                                 <span>{booking.createdAt ? new Date(booking.createdAt).toLocaleDateString() : 'N/A'}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Preferred Roommate:</label>
+                                <span>{roommateLoading ? 'Loading...' : (roommateName && roommateName !== 'N/A' ? roommateName : (booking.roommate || 'N/A'))}</span>
                             </div>
                         </div>
                     </div>

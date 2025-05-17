@@ -1,161 +1,94 @@
 .pending-bookings-container {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
+    overflow-x: auto;
 }
 
-.pending-bookings-container h2 {
-    color: #333;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.bookings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-}
-
-.booking-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.3s ease;
 }
 
-.booking-card:hover {
-    transform: translateY(-5px);
+.bookings-table th,
+.bookings-table td {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f1f3f5;
 }
 
-.booking-header {
-    padding: 1.5rem;
+.bookings-table th {
     background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: #2b2d42;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
 }
 
-.booking-header h3 {
-    margin: 0;
-    color: #333;
-    font-size: 1.2rem;
+.bookings-table tbody tr:hover {
+    background-color: #f8fafc;
 }
 
 .status-badge {
-    padding: 0.5rem 1rem;
+    display: inline-block;
+    padding: 0.4rem 1rem;
     border-radius: 20px;
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
 }
 
-.status-badge.pending {
-    background-color: #ffc107;
-    color: #212529;
+.status-badge.approved {
+    background-color: #c3fae8;
+    color: #099268;
 }
 
-.booking-details {
-    padding: 1.5rem;
-}
-
-.booking-details p {
-    margin: 0.5rem 0;
-    color: #666;
-}
-
-.booking-details strong {
-    color: #333;
-}
-
-.room-assignment {
-    padding: 1rem 1.5rem;
-    background-color: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-}
-
-.room-number-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.room-number-input:focus {
-    outline: none;
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.booking-actions {
-    padding: 1.5rem;
-    display: flex;
-    gap: 1rem;
-    background-color: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-}
-
-.approve-btn,
-.reject-btn {
-    flex: 1;
-    padding: 0.75rem;
+.view-details-btn,
+.delete-btn {
+    padding: 0.5rem 1rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
 }
 
-.approve-btn {
-    background-color: #28a745;
-    color: white;
+.view-details-btn {
+    background-color: #e7f5ff;
+    color: #228be6;
 }
 
-.approve-btn:hover {
-    background-color: #218838;
+.view-details-btn:hover {
+    background-color: #d0ebff;
 }
 
-.reject-btn {
-    background-color: #dc3545;
-    color: white;
+.delete-btn {
+    background-color: #fff5f5;
+    color: #fa5252;
 }
 
-.reject-btn:hover {
-    background-color: #c82333;
-}
-
-.no-bookings {
-    text-align: center;
-    color: #666;
-    font-size: 1.1rem;
-    padding: 2rem;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-}
-
-.loading,
-.error {
-    text-align: center;
-    padding: 2rem;
-    color: #666;
-}
-
-.error {
-    color: #dc3545;
+.delete-btn:hover {
+    background-color: #ffe3e3;
 }
 
 @media (max-width: 768px) {
     .pending-bookings-container {
         padding: 1rem;
     }
-
-    .bookings-grid {
-        grid-template-columns: 1fr;
+    
+    .bookings-table th,
+    .bookings-table td {
+        padding: 1rem;
+        white-space: nowrap;
     }
-
-    .booking-actions {
-        flex-direction: column;
+    
+    .bookings-table {
+        min-width: 800px;
     }
-} 
+}

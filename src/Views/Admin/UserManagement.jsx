@@ -10,7 +10,8 @@ import {
   FaHotel,
   FaTimes,
   FaTachometerAlt,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaStar
 } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 import './UserManagement.css';
@@ -154,6 +155,10 @@ const UserManagement = () => {
           <Link to="/admin/hostels" className="nav-item">
             <FaHotel />
             Hostel Management
+          </Link>
+          <Link to="/admin/ratings" className="nav-item">
+            <FaStar />
+            Reviews & Ratings
           </Link>
           <button onClick={handleLogout} className="nav-item logout-btn">
             <FaSignOutAlt />

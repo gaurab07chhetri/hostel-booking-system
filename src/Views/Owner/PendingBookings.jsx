@@ -85,6 +85,27 @@ const PendingBookings = () => {
         }
     };
 
+    const handleDeleteBooking = async (bookingId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                toast.success('Booking deleted successfully');
+                setPendingBookings(prev => prev.filter(booking => booking._id !== bookingId));
+            } else {
+                throw new Error(data.message || 'Failed to delete booking');
+            }
+        } catch (err) {
+            toast.error(err.message);
+        }
+    };
+
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
 
@@ -140,6 +161,12 @@ const PendingBookings = () => {
                                     onClick={() => handleRejectBooking(booking._id)}
                                 >
                                     Reject
+                                </button>
+                                <button
+                                    className="delete-btn"
+                                    onClick={() => handleDeleteBooking(booking._id)}
+                                >
+                                    Delete
                                 </button>
                             </div>
                         </div>

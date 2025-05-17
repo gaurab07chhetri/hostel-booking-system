@@ -39,8 +39,25 @@ const userSchema = new mongoose.Schema({
         ref: 'Favorite'
     }],
     ratings: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Rating'
+        hostelId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Hostel',
+            required: true
+        },
+        rating: {
+            type: Number,
+            required: true,
+            min: 1,
+            max: 5
+        },
+        review: {
+            type: String,
+            maxlength: 500
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
     }]
 }, {
     timestamps: true
@@ -48,4 +65,4 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User; 
+export default User; 

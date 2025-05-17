@@ -78,7 +78,6 @@ const UserSchema = new mongoose.Schema({
         municipality: String,
         wardNo: String,
         streetAddress: String,
-       
         educationalInstitute: String,
         classTime: String,
         levelOfStudy: String,
@@ -92,6 +91,7 @@ const UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
+        roommate: String,
         guardianInfo: {
             father: {
                 name: String,
@@ -120,6 +120,18 @@ const UserSchema = new mongoose.Schema({
             type: String,
             enum: ['pending', 'approved', 'rejected', 'completed'],
             default: 'pending'
+        },
+        rating: {
+            value: {
+                type: Number,
+                min: 1,
+                max: 5
+            },
+            review: String,
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
         },
         createdAt: {
             type: Date,

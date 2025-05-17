@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { FaBed, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUtensils, FaArrowRight } from 'react-icons/fa';
+import { FaBed, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUtensils, FaArrowRight, FaStar, FaRegStar, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import './HostelDetailsModal.css';
 
-const HostelDetailsModal = ({ hostel, show, onClose }) => {
+const HostelDetailsModal = ({ hostel, show, onClose, onRatingSubmitted }) => {
     const navigate = useNavigate();
     const [hasExistingBooking, setHasExistingBooking] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [review, setReview] = useState('');
+    const [averageRating, setAverageRating] = useState(0);
+    const [totalRatings, setTotalRatings] = useState(0);
+    const [showReviews, setShowReviews] = useState(false);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         checkExistingBooking();
-    }, []);
+        fetchRatings();
+    }, [hostel]);
 
     const checkExistingBooking = async () => {
+        if (!hostel || !hostel._id) return;
         try {
             const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:5000/api/bookings/my-bookings', {
@@ -23,15 +32,77 @@ const HostelDetailsModal = ({ hostel, show, onClose }) => {
             const data = await response.json();
             
             if (response.ok && data.bookings && data.bookings.length > 0) {
-                // Check if there are any active bookings (pending, approved, or paid)
-                const activeBookings = data.bookings.filter(booking => 
-                    ['pending', 'approved', 'paid'].includes(booking.status.toLowerCase())
+                // Check if there are any active bookings for this hostel
+                const hasBookedThisHostel = data.bookings.some(booking => 
+                    (
+                        booking.hostelId === hostel._id ||
+                        (booking.hostelId && booking.hostelId._id === hostel._id) ||
+                        (booking.hostelId && typeof booking.hostelId === 'object' && booking.hostelId.toString() === hostel._id) ||
+                        (typeof booking.hostelId === 'string' && booking.hostelId === hostel._id)
+                    ) &&
+                    ['approved', 'paid'].includes(booking.status?.toLowerCase?.() || '')
                 );
-                setHasExistingBooking(activeBookings.length > 0);
+                setHasExistingBooking(hasBookedThisHostel);
             }
         } catch (error) {
             console.error('Error checking existing bookings:', error);
         }
+    };
+
+    const fetchRatings = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/users/all', {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            const users = await response.json();
+
+            // Get ratings from the ratings array
+            const ratingsFromArray = users.flatMap(user =>
+                (user.ratings || []).filter(r => r.hostelId === hostel._id || r.hostelId === hostel._id?.toString())
+            );
+
+            // Get ratings from bookings
+            const ratingsFromBookings = users.flatMap(user =>
+                (user.bookings || [])
+                    .filter(b => b.hostelId && (b.hostelId.toString() === hostel._id || b.hostelId.toString() === hostel._id?.toString()))
+                    .filter(b => b.rating && b.rating.value)
+                    .map(b => ({
+                        rating: b.rating.value,
+                        review: b.rating.review,
+                        createdAt: b.rating.createdAt,
+                        userName: user.name || 'Anonymous'
+                    }))
+            );
+
+            // Combine both rating sources
+            const allRatings = [...ratingsFromArray, ...ratingsFromBookings];
+            
+            const averageRating = allRatings.length > 0 
+                ? (allRatings.reduce((sum, r) => sum + r.rating, 0) / allRatings.length).toFixed(1) 
+                : 0;
+            
+            setAverageRating(parseFloat(averageRating));
+            setTotalRatings(allRatings.length);
+            setReviews(allRatings);
+        } catch (error) {
+            console.error('Error fetching ratings:', error);
+        }
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
+    const handleRatingClick = () => {
+        if (!hasExistingBooking) {
+            toast.error('You have not booked this hostel to rate it');
+            return;
+        }
+        navigate('/ratings', { state: { hostel } });
     };
 
     const handleBookNow = () => {
@@ -65,9 +136,6 @@ const HostelDetailsModal = ({ hostel, show, onClose }) => {
             <div className="user-modal-content" onClick={e => e.stopPropagation()}>
                 <div className="user-modal-header">
                     <h2>{hostel.hostel_name}</h2>
-                    {/* <button className="user-book-now-btn header-btn" onClick={handleBookNow}>
-                        Book Now <FaArrowRight />
-                    </button> */}
                 </div>
 
                 <div className="user-modal-body">
@@ -109,6 +177,28 @@ const HostelDetailsModal = ({ hostel, show, onClose }) => {
                                     <h3><FaBed /> Hostel Details</h3>
                                     <p><strong>Type:</strong> {hostel.hostel_type}</p>
                                     <p><strong>Features:</strong> {hostel.features}</p>
+                                </div>
+
+                                <div className="rating-section">
+                                    <h3>Ratings & Reviews</h3>
+                                    <div className="current-rating">
+                                        <div className="rating-stars">
+                                            {[...Array(5)].map((_, index) => (
+                                                <span key={index} className="star">
+                                                    {index < averageRating ? <FaStar /> : <FaRegStar />}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <span className="rating-count">
+                                            {totalRatings ? `(${totalRatings} reviews)` : 'No reviews yet'}
+                                        </span>
+                                    </div>
+                                    <button 
+                                        className="view-reviews-btn"
+                                        onClick={() => setShowReviews(true)}
+                                    >
+                                        View Reviews
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -172,15 +262,57 @@ const HostelDetailsModal = ({ hostel, show, onClose }) => {
                 </div>
 
                 <div className="user-modal-footer">
-                    <button className="user-close-btn" onClick={onClose}>Close</button>
-                    <button 
-                        className="user-book-now-btn"
-                        onClick={handleBookNow}
-                    >
-                        Book Now <FaArrowRight />
+                    <button className="user-rate-btn" onClick={handleRatingClick}>
+                        <FaStar /> Rate Us
                     </button>
+                    <div className="user-footer-actions">
+                        <button className="user-close-btn" onClick={onClose}>Close</button>
+                        <button 
+                            className="user-book-now-btn"
+                            onClick={handleBookNow}
+                        >
+                            Book Now <FaArrowRight />
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            {showReviews && (
+                <div className="reviews-modal-overlay" onClick={() => setShowReviews(false)}>
+                    <div className="reviews-modal-content" onClick={e => e.stopPropagation()}>
+                        <div className="reviews-modal-header">
+                            <h3>Reviews for {hostel.hostel_name}</h3>
+                            <button className="close-reviews-btn" onClick={() => setShowReviews(false)}>
+                                <FaTimes />
+                            </button>
+                        </div>
+                        
+                        {reviews.length > 0 ? (
+                            reviews.map((review, index) => (
+                                <div key={index} className="review-item">
+                                    <div className="review-header">
+                                        <div className="review-rating">
+                                            {[...Array(5)].map((_, i) => (
+                                                <span key={i} className="star">
+                                                    {i < review.rating ? <FaStar /> : <FaRegStar />}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <span className="review-date">
+                                            {formatDate(review.createdAt)}
+                                        </span>
+                                    </div>
+                                    <p className="review-text">{review.review}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="no-reviews">
+                                No reviews available yet.
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

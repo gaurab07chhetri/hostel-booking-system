@@ -59,7 +59,7 @@
     border-radius: 0.75rem;
     color: #64748b;
     text-decoration: none;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .nav-item:hover {
@@ -71,17 +71,19 @@
   .nav-item.active {
     background: var(--primary);
     color: var(--text-light);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   }
   
   .logout-btn {
     margin-top: auto;
     background: var(--danger);
     color: var(--text-light);
+    border: none;
+    cursor: pointer;
   }
   
   .logout-btn:hover {
-    background: var(--danger-hover);
+    background: #dc2626;
   }
   
   /* Main Content Area */

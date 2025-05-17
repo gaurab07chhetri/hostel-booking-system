@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';  
-import { FaSearch, FaHeart, FaShareAlt, FaEllipsisV, FaUserCircle, FaHome, FaBuilding, FaMapMarkerAlt, FaPhone, FaEnvelope, FaBed, FaMale, FaFemale, FaUser, FaBook, FaSignOutAlt, FaHistory, FaCog, FaTimes, FaBars, FaEdit } from 'react-icons/fa';  
+import { FaSearch, FaHeart, FaShareAlt, FaEllipsisV, FaUserCircle, FaHome, FaBuilding, FaMapMarkerAlt, FaPhone, FaEnvelope, FaBed, FaMale, FaFemale, FaUser, FaBook, FaSignOutAlt, FaHistory, FaCog, FaTimes, FaBars, FaEdit, FaStar, FaRegStar, FaArrowLeft, FaBookmark } from 'react-icons/fa';  
 import { AuthContext } from '../../context/AuthContext';
 import HostelDetailsModal from './HostelDetailsModal';
 import { toast, ToastContainer } from 'react-toastify';
@@ -204,13 +204,40 @@ const Dashboard = () => {
             const boysCount = validHostels.filter(h => h.hostel_type === 'Boys').length;
             const girlsCount = validHostels.filter(h => h.hostel_type === 'Girls').length;
             
-            setHostels(validHostels);
-            setFilteredHostels(validHostels);
+            // Fetch all users to get ratings
+            const usersResponse = await axios.get('http://localhost:5000/api/users/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const users = usersResponse.data;
+
+            // Calculate average ratings for each hostel from bookings only
+            const hostelsWithRatings = validHostels.map(hostel => {
+                // Get ratings from bookings of all users for this hostel
+                const ratingsFromBookings = users.flatMap(user =>
+                    (user.bookings || [])
+                        .filter(b => b.hostelId && (b.hostelId.toString() === hostel._id || b.hostelId === hostel._id))
+                        .filter(b => b.rating && b.rating.value)
+                        .map(b => b.rating.value)
+                );
+
+                const avgRating = ratingsFromBookings.length > 0
+                    ? (ratingsFromBookings.reduce((sum, r) => sum + r, 0) / ratingsFromBookings.length).toFixed(1)
+                    : 0;
+
+                return {
+                    ...hostel,
+                    averageRating: parseFloat(avgRating),
+                    totalRatings: ratingsFromBookings.length
+                };
+            });
+
+            setHostels(hostelsWithRatings);
+            setFilteredHostels(hostelsWithRatings);
             setTotalHostels(totalCount);
             setBoysHostelsCount(boysCount);
             setGirlsHostelsCount(girlsCount);
             
-            if (validHostels.length === 0) {
+            if (hostelsWithRatings.length === 0) {
                 setError('No approved hostels found matching your criteria');
             }
         } catch (error) {
@@ -455,7 +482,7 @@ const Dashboard = () => {
                     </div>
                 );
             case 'favorites':
-    return (
+                return (
                     <div className="favorite-hostels-section">
                         <h3>Favorite Hostels</h3>
                         {favoriteHostels.length > 0 ? (
@@ -490,9 +517,6 @@ const Dashboard = () => {
                                                 <FaEnvelope />
                                                 <span>{hostel.email}</span>
                                             </div>
-                                            <div className="features">
-                                                <strong>Features:</strong> {hostel.features}
-                                            </div>
                                             <div className="card-actions">
                                                 <Button 
                                                     variant="link" 
@@ -501,13 +525,13 @@ const Dashboard = () => {
                                                 >
                                                     <FaHeart />
                                                 </Button>
-                <Button 
+                                                <Button 
                                                     variant="primary"
                                                     className="view-details-btn1"
                                                     onClick={() => handleViewDetails(hostel)}
                                                 >
                                                     View Details
-                </Button>
+                                                </Button>
                                             </div>
                                         </Card.Body>
                                     </Card>
@@ -703,9 +727,6 @@ const Dashboard = () => {
                                                         <FaEnvelope />
                                                         <span>{hostel.email}</span>
                                                     </div>
-                                                    <div className="features">
-                                                        <strong>Features:</strong> {hostel.features}
-                                                    </div>
                                                     <div className="card-actions">
                                                         <Button 
                                                             variant="link" 
@@ -740,127 +761,141 @@ const Dashboard = () => {
 
                             <div className="statistics-section">
                                 <div className="stat-card">
-                    <div className="stat-icon">
-                        <FaBuilding />
-                    </div>
+                                    <div className="stat-icon">
+                                        <FaBuilding />
+                                    </div>
                                     <div className="stat-content">
-                        <h3>Total Hostels</h3>
-                        <p>{totalHostels}</p>
-                    </div>
-                </div>
+                                        <h3>Total Hostels</h3>
+                                        <p>{totalHostels}</p>
+                                    </div>
+                                </div>
                                 <div className="stat-card">
-                    <div className="stat-icon">
-                        <FaMale />
-                    </div>
+                                    <div className="stat-icon">
+                                        <FaMale />
+                                    </div>
                                     <div className="stat-content">
-                        <h3>Boys Hostels</h3>
-                        <p>{boysHostelsCount}</p>
-                    </div>
-                </div>
+                                        <h3>Boys Hostels</h3>
+                                        <p>{boysHostelsCount}</p>
+                                    </div>
+                                </div>
                                 <div className="stat-card">
-                    <div className="stat-icon">
-                        <FaFemale />
-                    </div>
+                                    <div className="stat-icon">
+                                        <FaFemale />
+                                    </div>
                                     <div className="stat-content">
-                        <h3>Girls Hostels </h3>
-                        
-                        <p>{girlsHostelsCount}</p>
-                    </div>
-                </div>
-            </div>
+                                        <h3>Girls Hostels </h3>
+                                        <p>{girlsHostelsCount}</p>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className="search-section">
                                 <div className="search-container">
-                    <div className="search-input-wrapper">
-                        <FaSearch className="search-icon" />
-                        <input 
-                            type="text"
-                            placeholder="Search hostels by name or location..."
-                            value={searchQuery}
-                            onChange={handleSearchChange}
+                                    <div className="search-input-wrapper">
+                                        <FaSearch className="search-icon" />
+                                        <input 
+                                            type="text"
+                                            placeholder="Search hostels by name or location..."
+                                            value={searchQuery}
+                                            onChange={handleSearchChange}
                                             className="search-input"
-                        />
-                    </div>
-                    <select 
-                        value={hostel_type} 
-                        onChange={handleHostelTypeChange} 
+                                        />
+                                    </div>
+                                    <select 
+                                        value={hostel_type} 
+                                        onChange={handleHostelTypeChange} 
                                         className="hostel-type-select"
-                    >
-                        <option value="">All Hostels</option>
-                        <option value="Boys">Boys Hostel</option>
-                        <option value="Girls">Girls Hostel</option>
-                    </select>
-                </div>
-            </div>
+                                    >
+                                        <option value="">All Hostels</option>
+                                        <option value="Boys">Boys Hostel</option>
+                                        <option value="Girls">Girls Hostel</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             {loading && <div className="loading">Loading hostels...</div>}
                             {error && <div className="error-message">{error}</div>}
 
-            <div className="hostel-cards-container">
-                {filteredHostels.map((hostel) => (
-                    <Card key={hostel._id} className="hostel-card">
-                        <div className="card-image-container">
-                            <img 
-                                src={hostel.hostelImage || 'https://via.placeholder.com/400x300?text=No+Image'} 
-                                alt={hostel.hostel_name}
-                                className="hostel-image"
-                                onError={(e) => {
-                                    e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
-                                }}
-                            />
-                            <div className="hostel-type-badge">
-                                {hostel.hostel_type === 'Boys' ? <FaMale /> : <FaFemale />}
-                                {hostel.hostel_type}
+                            <div className="hostel-cards-container">
+                                {filteredHostels.map((hostel) => (
+                                    <Card key={hostel._id} className="hostel-card">
+                                        <div className="card-image-container">
+                                            <img 
+                                                src={hostel.hostelImage || 'https://via.placeholder.com/400x300?text=No+Image'} 
+                                                alt={hostel.hostel_name}
+                                                className="hostel-image"
+                                                onError={(e) => {
+                                                    e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                                                }}
+                                            />
+                                            <div className="hostel-type-badge">
+                                                {hostel.hostel_type === 'Boys' ? <FaMale /> : <FaFemale />}
+                                                {hostel.hostel_type}
+                                            </div>
+                                        </div>
+                                        <Card.Body>
+                                            <h3 className="hostel-name">{hostel.hostel_name}</h3>
+                                            <div className="info-row">
+                                                <FaMapMarkerAlt />
+                                                <span>{hostel.hostel_location}</span>
+                                            </div>
+                                            <div className="info-row">
+                                                <FaPhone />
+                                                <span>{hostel.phone_number}</span>
+                                            </div>
+                                            <div className="info-row">
+                                                <FaEnvelope />
+                                                <span>{hostel.email}</span>
+                                            </div>
+                                            <div className="features">
+                                                <p>{hostel.features}</p>
+                                            </div>
+                                            
+                                            <div className="rating-section">
+                                                <div className="rating-stars">
+                                                    {[...Array(5)].map((_, index) => (
+                                                        <span key={index} className="star">
+                                                            {index < hostel.averageRating ? <FaStar /> : <FaRegStar />}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                <span className="rating-count">
+                                                    {hostel.totalRatings ? `(${hostel.totalRatings} reviews)` : 'No reviews yet'}
+                                                </span>
+                                            </div>
+
+                                            <div className="card-actions">
+                                                <Button 
+                                                    variant="link" 
+                                                    className={`favorite-btn ${isHostelFavorite(hostel._id) ? 'active' : ''}`}
+                                                    onClick={() => toggleFavorite(hostel)}
+                                                >
+                                                    <FaHeart />
+                                                </Button>
+                                                <Button 
+                                                    variant="primary"
+                                                    className="view-details-btn1"
+                                                    onClick={() => handleViewDetails(hostel)}
+                                                >
+                                                    View Details
+                                                </Button>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                ))}
+                                {!loading && filteredHostels.length === 0 && (
+                                    <div className="no-hostels">No hostels found</div>
+                                )}
                             </div>
-                        </div>
-                        <Card.Body>
-                            <h3 className="hostel-name">{hostel.hostel_name}</h3>
-                            <div className="info-row">
-                                <FaMapMarkerAlt />
-                                <span>{hostel.hostel_location}</span>
-                            </div>
-                            <div className="info-row">
-                                <FaPhone />
-                                <span>{hostel.phone_number}</span>
-                            </div>
-                            <div className="info-row">
-                                <FaEnvelope />
-                                <span>{hostel.email}</span>
-                            </div>
-                            <div className="features">
-                                <strong>Features:</strong> {hostel.features}
-                            </div>
-                            <div className="card-actions">
-                                <Button 
-                                    variant="link" 
-                                    className={`favorite-btn ${isHostelFavorite(hostel._id) ? 'active' : ''}`}
-                                    onClick={() => toggleFavorite(hostel)}
-                                >
-                                    <FaHeart />
-                                </Button>
-                                <Button 
-                                    variant="primary"
-                                    className="view-details-btn1"
-                                    onClick={() => handleViewDetails(hostel)}
-                                >
-                                    View Details
-                                </Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                ))}
-                {!loading && filteredHostels.length === 0 && (
-                    <div className="no-hostels">No hostels found</div>
-                )}
-            </div>
                         </>
                     )}
 
-            <HostelDetailsModal
-                hostel={selectedHostel}
-                show={showModal}
-                onClose={() => setShowModal(false)}
-            />
+                    <HostelDetailsModal
+                        hostel={selectedHostel}
+                        show={showModal}
+                        onClose={() => setShowModal(false)}
+                        onRatingSubmitted={() => fetchHostels(searchQuery, hostel_type)}
+                    />
                 </div>
             </main>
         </div>

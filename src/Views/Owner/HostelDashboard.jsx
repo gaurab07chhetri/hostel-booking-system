@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaUser, FaHotel, FaEdit, FaBook, FaSignOutAlt, FaBars, FaTimes, FaMapMarkerAlt, FaPhone, FaEnvelope, FaBed, FaTrash } from 'react-icons/fa';
+import { FaUser, FaHotel, FaEdit, FaBook, FaSignOutAlt, FaBars, FaTimes, FaMapMarkerAlt, FaPhone, FaEnvelope, FaBed, FaTrash, FaStar } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 import './HostelDashboard.css';
 import { toast } from 'react-hot-toast';
@@ -9,6 +9,7 @@ import HostelDetailsModal from './HostelDetailsModal';
 import EditHostelDetails from './EditHostelDetails';
 import BookingActionModal from './BookingActionModal';
 import UserDetailsModal from './UserDetailsModal';
+import RatingsO from './RatingsO';
 
 const HostelDashboard = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -485,6 +486,9 @@ const HostelDashboard = () => {
                     </div>
                 );
 
+            case 'ratings':
+                return <RatingsO />;
+
             default:
                 return null;
         }
@@ -541,7 +545,7 @@ const HostelDashboard = () => {
                                         )}
                                         <button
                                             className="delete-button"
-                                            onClick={() => handleDeleteBooking(booking._id)}
+                                            onClick={() => handleDeleteBooking(booking)}
                                         >
                                             <FaTrash /> Delete
                                         </button>
@@ -699,11 +703,16 @@ const HostelDashboard = () => {
         setSelectedBooking(booking);
     };
 
-    const handleDeleteBooking = async (bookingId) => {
+    const handleDeleteBooking = async (bookingIdOrBooking) => {
+        // Accept either a booking object or an ID
+        let bookingId = bookingIdOrBooking;
+        if (typeof bookingIdOrBooking === 'object' && bookingIdOrBooking !== null) {
+            bookingId = bookingIdOrBooking._id || bookingIdOrBooking.bookingId;
+        }
+        console.log('Attempting to delete booking:', bookingIdOrBooking, 'Using ID:', bookingId);
         if (!window.confirm('Are you sure you want to delete this booking? This action cannot be undone.')) {
             return;
         }
-
         try {
             const token = localStorage.getItem('token');
             const response = await axios.delete(`http://localhost:5000/api/bookings/${bookingId}`, {
@@ -712,7 +721,6 @@ const HostelDashboard = () => {
                     'Content-Type': 'application/json'
                 }
             });
-
             if (response.data.success) {
                 toast.success('Booking deleted successfully');
                 fetchBookings(); // Refresh the bookings list
@@ -751,26 +759,26 @@ const HostelDashboard = () => {
                         className={`menu-item ${activeTab === 'edit' ? 'active' : ''}`}
                         onClick={() => setActiveTab('edit')}
                     >
-                        {/* <FaEdit /> Edit Hostel
-                    </button>
-                    <button 
-                        className={`menu-item ${activeTab === 'hostel' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('hostel')}
-                    > */}
                         <FaEdit /> Edit Hostel
                     </button>
-                                    <button 
+                    <button 
                         className={`menu-item ${activeTab === 'bookings' ? 'active' : ''}`}
                         onClick={() => setActiveTab('bookings')}
-                                    >
+                    >
                         <FaBook /> Bookings
-                                    </button>
-                                    <button 
+                    </button>
+                    <button 
+                        className={`menu-item ${activeTab === 'ratings' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('ratings')}
+                    >
+                        <FaStar /> Reviews & Ratings
+                    </button>
+                    <button 
                         className="menu-item logout-btn"
                         onClick={handleLogout}
-                                    >
+                    >
                         <FaSignOutAlt /> Logout
-                                    </button>
+                    </button>
                 </div>
             </div>
             <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>

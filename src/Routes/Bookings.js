@@ -297,4 +297,33 @@ router.put('/:bookingId/reject', auth, async (req, res) => {
     }
 });
 
+// Delete a booking by ID
+router.delete('/:bookingId', auth, async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        // Find the user with this booking
+        const user = await User.findOne({ 'bookings._id': bookingId });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Booking not found'
+            });
+        }
+        // Remove the booking from the user's bookings array
+        user.bookings = user.bookings.filter(booking => booking._id.toString() !== bookingId);
+        await user.save();
+        res.status(200).json({
+            success: true,
+            message: 'Booking deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting booking:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete booking',
+            error: error.message
+        });
+    }
+});
+
 export default router; 
